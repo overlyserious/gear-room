@@ -54,3 +54,14 @@ export {
   type LookupItemDeps,
   type ItemLookupResult
 } from './return-use-cases.js';
+
+// Dashboard use cases
+export {
+  getOverdueCheckouts,
+  getInventoryStatus,
+  type GetOverdueCheckoutsDeps,
+  type OverdueCheckoutItem,
+  type GetInventoryStatusDeps,
+  type CategoryInventoryStatus,
+  type InventoryStatusSummary
+} from './dashboard-use-cases.js';

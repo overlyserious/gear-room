@@ -12,6 +12,8 @@ import {
   returnItems,
   getMemberItemsToReturn,
   lookupItemByCode,
+  getOverdueCheckouts,
+  getInventoryStatus,
   type CreateMemberInput
 } from '../../application/use-cases/index.js';
 import type { Result } from '../../application/result.js';
@@ -204,6 +206,29 @@ export const app = {
       },
       code
     );
+  },
+
+  // ============================================================================
+  // Dashboard Operations
+  // ============================================================================
+
+  async getOverdueCheckouts() {
+    const e = getEnv();
+    return getOverdueCheckouts({
+      checkoutRepo: e.checkoutRepo,
+      memberRepo: e.memberRepo,
+      gearTypeRepo: e.gearTypeRepo,
+      gearItemRepo: e.gearItemRepo,
+      clock: e.clock
+    });
+  },
+
+  async getInventoryStatus() {
+    const e = getEnv();
+    return getInventoryStatus({
+      gearTypeRepo: e.gearTypeRepo,
+      gearItemRepo: e.gearItemRepo
+    });
   },
 
   // ============================================================================
