@@ -14,11 +14,23 @@ import {
   lookupItemByCode,
   getOverdueCheckouts,
   getInventoryStatus,
+  createGearType,
+  updateGearType,
+  updateBulkQuantity,
+  deleteGearType,
+  addGearItem,
+  updateGearItem,
+  sendItemToMaintenance,
+  returnItemFromMaintenance,
+  retireItem,
+  getGearTypeDetail,
+  listGearTypesWithStatus,
   type CreateMemberInput
 } from '../../application/use-cases/index.js';
 import type { Result } from '../../application/result.js';
 import type { Member } from '../../domain/entities/member.js';
-import type { GearCondition } from '../../domain/types.js';
+import type { GearCategory, GearCondition, GearStatus } from '../../domain/types.js';
+import type { CreateGearTypeInput } from '../../domain/entities/gear-type.js';
 import { seedDemoData, clearAllData, hasDemoData } from '../demo/seed-data.js';
 
 let env: AppEnvironment | null = null;
@@ -229,6 +241,101 @@ export const app = {
       gearTypeRepo: e.gearTypeRepo,
       gearItemRepo: e.gearItemRepo
     });
+  },
+
+  // ============================================================================
+  // Inventory Operations
+  // ============================================================================
+
+  async createGearType(input: CreateGearTypeInput) {
+    const e = getEnv();
+    return createGearType(
+      { gearTypeRepo: e.gearTypeRepo, idGenerator: e.idGenerator, clock: e.clock },
+      input
+    );
+  },
+
+  async updateGearType(input: { id: string; name?: string; checkoutDurationDays?: number; notes?: string }) {
+    const e = getEnv();
+    return updateGearType(
+      { gearTypeRepo: e.gearTypeRepo, clock: e.clock },
+      input
+    );
+  },
+
+  async updateBulkQuantity(gearTypeId: string, newQuantity: number) {
+    const e = getEnv();
+    return updateBulkQuantity(
+      { gearTypeRepo: e.gearTypeRepo, clock: e.clock },
+      gearTypeId,
+      newQuantity
+    );
+  },
+
+  async deleteGearType(gearTypeId: string) {
+    const e = getEnv();
+    return deleteGearType(
+      { gearTypeRepo: e.gearTypeRepo, gearItemRepo: e.gearItemRepo },
+      gearTypeId
+    );
+  },
+
+  async addGearItem(input: { gearTypeId: string; code: string; condition?: GearCondition; notes?: string }) {
+    const e = getEnv();
+    return addGearItem(
+      { gearTypeRepo: e.gearTypeRepo, gearItemRepo: e.gearItemRepo, idGenerator: e.idGenerator, clock: e.clock },
+      input
+    );
+  },
+
+  async updateGearItem(input: { id: string; condition?: GearCondition; notes?: string }) {
+    const e = getEnv();
+    return updateGearItem(
+      { gearItemRepo: e.gearItemRepo, clock: e.clock },
+      input
+    );
+  },
+
+  async sendItemToMaintenance(itemId: string, notes?: string) {
+    const e = getEnv();
+    return sendItemToMaintenance(
+      { gearItemRepo: e.gearItemRepo, clock: e.clock },
+      itemId,
+      notes
+    );
+  },
+
+  async returnItemFromMaintenance(itemId: string, condition: GearCondition) {
+    const e = getEnv();
+    return returnItemFromMaintenance(
+      { gearItemRepo: e.gearItemRepo, clock: e.clock },
+      itemId,
+      condition
+    );
+  },
+
+  async retireItem(itemId: string) {
+    const e = getEnv();
+    return retireItem(
+      { gearItemRepo: e.gearItemRepo, clock: e.clock },
+      itemId
+    );
+  },
+
+  async getGearTypeDetail(gearTypeId: string) {
+    const e = getEnv();
+    return getGearTypeDetail(
+      { gearTypeRepo: e.gearTypeRepo, gearItemRepo: e.gearItemRepo },
+      gearTypeId
+    );
+  },
+
+  async listGearTypesWithStatus(filters?: { searchTerm?: string; category?: GearCategory; hasItemsInStatus?: GearStatus }) {
+    const e = getEnv();
+    return listGearTypesWithStatus(
+      { gearTypeRepo: e.gearTypeRepo, gearItemRepo: e.gearItemRepo },
+      filters
+    );
   },
 
   // ============================================================================

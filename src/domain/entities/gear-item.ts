@@ -283,6 +283,30 @@ export class GearItem {
   }
 
   /**
+   * Update the condition of the item.
+   * Rejects if the item is currently checked out or retired.
+   */
+  updateCondition(
+    condition: GearCondition,
+    deps: { clock: { now(): Date } }
+  ): Result<GearItem, { type: 'is_checked_out' } | { type: 'is_retired' }> {
+    if (this.props.status === GearStatus.CHECKED_OUT) {
+      return err({ type: 'is_checked_out' });
+    }
+    if (this.props.status === GearStatus.RETIRED) {
+      return err({ type: 'is_retired' });
+    }
+
+    return ok(
+      new GearItem({
+        ...this.props,
+        condition,
+        updatedAt: deps.clock.now()
+      })
+    );
+  }
+
+  /**
    * Update item notes.
    */
   updateNotes(notes: string | undefined, deps: { clock: { now(): Date } }): GearItem {

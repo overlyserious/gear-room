@@ -65,3 +65,41 @@ export {
   type CategoryInventoryStatus,
   type InventoryStatusSummary
 } from './dashboard-use-cases.js';
+
+// Inventory use cases
+export {
+  createGearType,
+  updateGearType,
+  updateBulkQuantity,
+  deleteGearType,
+  addGearItem,
+  updateGearItem,
+  sendItemToMaintenance,
+  returnItemFromMaintenance,
+  retireItem,
+  getGearTypeDetail,
+  listGearTypesWithStatus,
+  type CreateGearTypeUseCaseError,
+  type CreateGearTypeDeps,
+  type UpdateGearTypeError,
+  type UpdateGearTypeDeps,
+  type UpdateGearTypeInput,
+  type UpdateBulkQuantityError,
+  type UpdateBulkQuantityDeps,
+  type DeleteGearTypeError,
+  type DeleteGearTypeDeps,
+  type AddGearItemError,
+  type AddGearItemDeps,
+  type UpdateGearItemError,
+  type UpdateGearItemDeps,
+  type SendToMaintenanceError,
+  type SendToMaintenanceDeps,
+  type ReturnFromMaintenanceError,
+  type ReturnFromMaintenanceDeps,
+  type RetireItemError,
+  type RetireItemDeps,
+  type GetGearTypeDetailDeps,
+  type GearTypeDetail,
+  type ListGearTypesDeps,
+  type GearTypeListItem
+} from './inventory-use-cases.js';
