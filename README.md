@@ -16,11 +16,9 @@ A local-first web application for managing outdoor gear checkouts at a college g
 
 ```bash
 npm install
-npm run dev        # dev server at localhost:5173
 npm run build      # static build to /build
-npm run preview    # preview production build
-npm run check      # type-check
 npm run test       # run tests
+npm run dev        # dev server at localhost:5173
 ```
 
 ## Architecture
