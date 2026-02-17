@@ -222,9 +222,12 @@ export class GearItem {
   sendToMaintenance(
     notes: string | undefined,
     deps: { clock: { now(): Date } }
-  ): Result<GearItem, { type: 'already_in_maintenance' } | { type: 'is_retired' }> {
+  ): Result<GearItem, { type: 'already_in_maintenance' } | { type: 'is_checked_out' } | { type: 'is_retired' }> {
     if (this.props.status === GearStatus.MAINTENANCE) {
       return err({ type: 'already_in_maintenance' });
+    }
+    if (this.props.status === GearStatus.CHECKED_OUT) {
+      return err({ type: 'is_checked_out' });
     }
     if (this.props.status === GearStatus.RETIRED) {
       return err({ type: 'is_retired' });
@@ -264,7 +267,10 @@ export class GearItem {
   /**
    * Retire the item permanently.
    */
-  retire(deps: { clock: { now(): Date } }): Result<GearItem, { type: 'already_retired' }> {
+  retire(deps: { clock: { now(): Date } }): Result<GearItem, { type: 'is_checked_out' } | { type: 'already_retired' }> {
+    if (this.props.status === GearStatus.CHECKED_OUT) {
+      return err({ type: 'is_checked_out' });
+    }
     if (this.props.status === GearStatus.RETIRED) {
       return err({ type: 'already_retired' });
     }

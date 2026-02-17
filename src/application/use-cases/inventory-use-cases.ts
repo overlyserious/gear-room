@@ -14,7 +14,7 @@ import {
   TrackingMode
 } from '../../domain/types.js';
 import type { GearTypeId } from '../../domain/value-objects/index.js';
-import { gearTypeId } from '../../domain/value-objects/index.js';
+import { gearItemId, gearTypeId } from '../../domain/value-objects/index.js';
 
 // ============================================================================
 // Create Gear Type
@@ -233,7 +233,7 @@ export async function updateGearItem(
   deps: UpdateGearItemDeps,
   input: { id: string; condition?: GearCondition; notes?: string }
 ): Promise<Result<GearItem, UpdateGearItemError>> {
-  const item = await deps.gearItemRepo.findById(input.id as any);
+  const item = await deps.gearItemRepo.findById(gearItemId(input.id));
   if (!item) {
     return err({ type: 'not_found', id: input.id });
   }
@@ -265,6 +265,7 @@ export async function updateGearItem(
 export type SendToMaintenanceError =
   | { type: 'not_found'; id: string }
   | { type: 'already_in_maintenance' }
+  | { type: 'is_checked_out' }
   | { type: 'is_retired' };
 
 export interface SendToMaintenanceDeps {
@@ -277,7 +278,7 @@ export async function sendItemToMaintenance(
   itemId: string,
   notes?: string
 ): Promise<Result<GearItem, SendToMaintenanceError>> {
-  const item = await deps.gearItemRepo.findById(itemId as any);
+  const item = await deps.gearItemRepo.findById(gearItemId(itemId));
   if (!item) {
     return err({ type: 'not_found', id: itemId });
   }
@@ -309,7 +310,7 @@ export async function returnItemFromMaintenance(
   itemId: string,
   condition: GearCondition
 ): Promise<Result<GearItem, ReturnFromMaintenanceError>> {
-  const item = await deps.gearItemRepo.findById(itemId as any);
+  const item = await deps.gearItemRepo.findById(gearItemId(itemId));
   if (!item) {
     return err({ type: 'not_found', id: itemId });
   }
@@ -341,7 +342,7 @@ export async function retireItem(
   deps: RetireItemDeps,
   itemId: string
 ): Promise<Result<GearItem, RetireItemError>> {
-  const item = await deps.gearItemRepo.findById(itemId as any);
+  const item = await deps.gearItemRepo.findById(gearItemId(itemId));
   if (!item) {
     return err({ type: 'not_found', id: itemId });
   }
