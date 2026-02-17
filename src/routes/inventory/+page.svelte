@@ -417,11 +417,10 @@
   });
 </script>
 
-<div class="max-w-6xl mx-auto p-6">
+<div class="max-w-5xl mx-auto p-6">
   <header class="mb-6 flex items-center justify-between">
     <div>
       <h1 class="text-2xl font-bold text-gray-900">Inventory Management</h1>
-      <a href="/" class="text-blue-600 hover:underline text-sm">Back to Home</a>
     </div>
     {#if !selectedDetail}
       <button

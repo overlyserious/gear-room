@@ -22,6 +22,7 @@ export interface GetOverdueCheckoutsDeps {
 
 export interface OverdueCheckoutItem {
   checkoutId: string;
+  memberId: string;
   memberName: string;
   memberEmail: string;
   memberPhone: string | null;
@@ -71,6 +72,7 @@ export async function getOverdueCheckouts(
 
       items.push({
         checkoutId: checkout.id,
+        memberId: member.id,
         memberName: member.fullName,
         memberEmail: member.email.value,
         memberPhone: member.phone,

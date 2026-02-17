@@ -193,28 +193,27 @@
   }
 </script>
 
-<div class="max-w-4xl mx-auto p-6">
-  <header class="mb-6 flex items-center justify-between">
-    <div>
-      <h1 class="text-2xl font-bold text-gray-900">Check Out Gear</h1>
-      <a href="/" class="text-blue-600 hover:underline text-sm">Back to Home</a>
-    </div>
+<div class="max-w-5xl mx-auto p-6">
+  <header class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Check Out Gear</h1>
   </header>
 
   {#if checkoutSuccess}
     <!-- Success State -->
-    <div class="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
-      <div class="text-5xl mb-4">✓</div>
-      <h2 class="text-2xl font-bold text-green-800 mb-2">Checkout Complete!</h2>
-      <p class="text-green-700 mb-6">Gear has been checked out successfully.</p>
-      <div class="space-x-4">
+    <div class="bg-white border border-green-200 rounded-lg p-8 text-center">
+      <svg class="w-12 h-12 text-green-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Checkout Complete</h2>
+      <p class="text-gray-600 mb-6">Gear has been checked out successfully.</p>
+      <div class="flex items-center justify-center gap-3">
         <button
           onclick={startNewCheckout}
-          class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           New Checkout
         </button>
-        <a href="/" class="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 inline-block">
+        <a href="/" class="px-6 py-3 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 inline-block">
           Back to Home
         </a>
       </div>
@@ -287,6 +286,7 @@
               type="text"
               bind:value={gearSearch}
               onkeydown={(e) => e.key === 'Enter' && searchGear()}
+              oninput={() => { clearTimeout(undefined); setTimeout(searchGear, 300); }}
               placeholder="Search gear..."
               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
@@ -300,13 +300,6 @@
                 <option value={cat}>{formatCategory(cat)}</option>
               {/each}
             </select>
-            <button
-              onclick={searchGear}
-              disabled={isSearchingGear}
-              class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-            >
-              Search
-            </button>
           </div>
 
           {#if isSearchingGear}
@@ -337,10 +330,9 @@
                           <button
                             onclick={() => addToCart(result.gearType, item)}
                             disabled={cart.some((c) => c.gearItem?.id === item.id)}
-                            class="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="px-3 py-1 text-sm bg-gray-100 text-gray-800 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-mono"
                           >
                             {item.code}
-                            <span class="text-xs opacity-75">({item.condition})</span>
                           </button>
                         {/each}
                       </div>
@@ -386,7 +378,7 @@
                   <div class="flex-1 min-w-0">
                     <div class="font-medium text-sm truncate">{item.gearType.name}</div>
                     {#if item.gearItem}
-                      <div class="text-xs text-gray-500">{item.gearItem.code}</div>
+                      <div class="text-xs text-gray-500 font-mono">{item.gearItem.code}</div>
                     {:else}
                       <div class="flex items-center gap-2 mt-1">
                         <button

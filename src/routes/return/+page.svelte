@@ -26,12 +26,27 @@
   let isReturning = $state(false);
   let returnSuccess = $state<{ itemCode: string; checkoutComplete: boolean } | null>(null);
 
+  // Per-item condition state for member mode
+  let itemConditions = $state<Record<string, GearCondition>>({});
+
   const CONDITIONS = [
-    { value: GearCondition.EXCELLENT, label: 'Excellent', color: 'green' },
-    { value: GearCondition.GOOD, label: 'Good', color: 'blue' },
-    { value: GearCondition.FAIR, label: 'Fair', color: 'yellow' },
-    { value: GearCondition.NEEDS_REPAIR, label: 'Needs Repair', color: 'red' }
+    { value: GearCondition.EXCELLENT, label: 'Excellent' },
+    { value: GearCondition.GOOD, label: 'Good' },
+    { value: GearCondition.FAIR, label: 'Fair' },
+    { value: GearCondition.NEEDS_REPAIR, label: 'Needs Repair' }
   ];
+
+  function getItemKey(item: ItemToReturn): string {
+    return item.gearItem ? item.gearItem.id : `${item.checkoutId}-${item.gearType.id}`;
+  }
+
+  function getItemCondition(item: ItemToReturn): GearCondition {
+    return itemConditions[getItemKey(item)] ?? GearCondition.GOOD;
+  }
+
+  function setItemCondition(item: ItemToReturn, condition: GearCondition) {
+    itemConditions = { ...itemConditions, [getItemKey(item)]: condition };
+  }
 
   // Load member if ID provided
   $effect(() => {
@@ -129,11 +144,11 @@
 
   async function returnMemberItem(item: ItemToReturn) {
     isReturning = true;
+    const condition = getItemCondition(item);
     try {
       if (item.gearItem) {
-        const result = await app.returnItemByCode(item.gearItem.code, returnCondition, returnNotes || undefined);
+        const result = await app.returnItemByCode(item.gearItem.code, condition, undefined);
         if (result.ok) {
-          // Refresh the list
           if (selectedMember) {
             await loadMemberItems(selectedMember.id);
           }
@@ -164,6 +179,7 @@
   function clearMember() {
     selectedMember = null;
     memberItems = null;
+    itemConditions = {};
   }
 
   function clearSuccess() {
@@ -171,23 +187,24 @@
   }
 </script>
 
-<div class="max-w-4xl mx-auto p-6">
+<div class="max-w-5xl mx-auto p-6">
   <header class="mb-6">
     <h1 class="text-2xl font-bold text-gray-900">Return Gear</h1>
-    <a href="/" class="text-blue-600 hover:underline text-sm">Back to Home</a>
   </header>
 
   <!-- Mode Toggle -->
-  <div class="flex gap-2 mb-6">
+  <div class="flex gap-1 mb-6 bg-gray-100 rounded-lg p-1 w-fit">
     <button
       onclick={() => (mode = 'quick')}
-      class="px-4 py-2 rounded-lg {mode === 'quick' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'}"
+      class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+        {mode === 'quick' ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}"
     >
       Quick Return
     </button>
     <button
       onclick={() => (mode = 'member')}
-      class="px-4 py-2 rounded-lg {mode === 'member' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'}"
+      class="px-4 py-2 rounded-md text-sm font-medium transition-colors
+        {mode === 'member' ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}"
     >
       By Member
     </button>
@@ -216,13 +233,13 @@
           bind:value={itemCode}
           onkeydown={(e) => e.key === 'Enter' && lookupItem()}
           placeholder="Enter item code (e.g., BIKE-003)..."
-          class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 text-lg font-mono"
+          class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg font-mono"
           autofocus
         />
         <button
           onclick={lookupItem}
           disabled={isLookingUp || !itemCode.trim()}
-          class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+          class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
           {isLookingUp ? 'Looking up...' : 'Look Up'}
         </button>
@@ -259,14 +276,8 @@
                     onclick={() => (returnCondition = cond.value)}
                     class="px-4 py-2 rounded-lg border-2 transition-colors
                       {returnCondition === cond.value
-                      ? cond.color === 'green'
-                        ? 'border-green-600 bg-green-50 text-green-800'
-                        : cond.color === 'blue'
-                          ? 'border-blue-600 bg-blue-50 text-blue-800'
-                          : cond.color === 'yellow'
-                            ? 'border-yellow-600 bg-yellow-50 text-yellow-800'
-                            : 'border-red-600 bg-red-50 text-red-800'
-                      : 'border-gray-200 hover:border-gray-400'}"
+                      ? 'border-gray-900 bg-gray-50 text-gray-900 font-medium'
+                      : 'border-gray-200 text-gray-600 hover:border-gray-400'}"
                   >
                     {cond.label}
                   </button>
@@ -281,7 +292,7 @@
                   id="notes"
                   bind:value={returnNotes}
                   rows="2"
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Any issues or notes about the item..."
                 ></textarea>
               </div>
@@ -289,7 +300,7 @@
               <button
                 onclick={handleQuickReturn}
                 disabled={isReturning}
-                class="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 text-lg"
+                class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-lg"
               >
                 {isReturning ? 'Processing...' : 'Return Item'}
               </button>
@@ -310,12 +321,12 @@
             bind:value={memberSearch}
             onkeydown={(e) => e.key === 'Enter' && searchMember()}
             placeholder="Search by college ID or name..."
-            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           />
           <button
             onclick={searchMember}
             disabled={isSearchingMember}
-            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
             Search
           </button>
@@ -337,12 +348,12 @@
           </div>
         {/if}
       {:else}
-        <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg mb-4">
+        <div class="flex items-center justify-between p-4 bg-blue-50 rounded-lg mb-4">
           <div>
             <div class="font-medium">{selectedMember.fullName}</div>
             <div class="text-sm text-gray-500">{selectedMember.collegeId.value}</div>
           </div>
-          <button onclick={clearMember} class="text-green-600 hover:underline text-sm">
+          <button onclick={clearMember} class="text-blue-600 hover:underline text-sm">
             Change
           </button>
         </div>
@@ -378,8 +389,9 @@
                   </div>
                   <div class="flex items-center gap-2">
                     <select
-                      bind:value={returnCondition}
-                      class="px-2 py-1 border border-gray-300 rounded text-sm"
+                      value={getItemCondition(item)}
+                      onchange={(e) => setItemCondition(item, (e.target as HTMLSelectElement).value as GearCondition)}
+                      class="px-2 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
                     >
                       {#each CONDITIONS as cond}
                         <option value={cond.value}>{cond.label}</option>
@@ -388,7 +400,7 @@
                     <button
                       onclick={() => returnMemberItem(item)}
                       disabled={isReturning}
-                      class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 text-sm"
+                      class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm"
                     >
                       Return
                     </button>

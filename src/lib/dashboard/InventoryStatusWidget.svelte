@@ -40,9 +40,9 @@
           {#each status.categories as cat}
             <tr>
               <td class="py-2 font-medium text-gray-900">{cat.categoryLabel}</td>
-              <td class="py-2 text-right text-green-700">{cat.available}</td>
-              <td class="py-2 text-right text-blue-700">{cat.checkedOut}</td>
-              <td class="py-2 text-right text-amber-700">{cat.maintenance}</td>
+              <td class="py-2 text-right text-gray-700">{cat.available}</td>
+              <td class="py-2 text-right text-gray-700">{cat.checkedOut}</td>
+              <td class="py-2 text-right text-gray-700">{cat.maintenance}</td>
               <td class="py-2 text-right text-gray-400">{cat.retired}</td>
               <td class="py-2 text-right font-medium text-gray-900">{cat.total}</td>
             </tr>
@@ -51,9 +51,9 @@
         <tfoot>
           <tr class="border-t-2">
             <td class="pt-2 font-semibold text-gray-900">Totals</td>
-            <td class="pt-2 text-right font-semibold text-green-700">{status.totals.available}</td>
-            <td class="pt-2 text-right font-semibold text-blue-700">{status.totals.checkedOut}</td>
-            <td class="pt-2 text-right font-semibold text-amber-700">{status.totals.maintenance}</td>
+            <td class="pt-2 text-right font-semibold text-gray-900">{status.totals.available}</td>
+            <td class="pt-2 text-right font-semibold text-gray-900">{status.totals.checkedOut}</td>
+            <td class="pt-2 text-right font-semibold text-gray-900">{status.totals.maintenance}</td>
             <td class="pt-2 text-right font-semibold text-gray-400">{status.totals.retired}</td>
             <td class="pt-2 text-right font-semibold text-gray-900">{status.totals.total}</td>
           </tr>

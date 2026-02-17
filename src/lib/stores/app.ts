@@ -25,6 +25,10 @@ import {
   retireItem,
   getGearTypeDetail,
   listGearTypesWithStatus,
+  getMemberProfile,
+  getMemberOpenItems,
+  getMemberBehaviorSummary,
+  getMemberActivityTimeline,
   type CreateMemberInput
 } from '../../application/use-cases/index.js';
 import type { Result } from '../../application/result.js';
@@ -335,6 +339,67 @@ export const app = {
     return listGearTypesWithStatus(
       { gearTypeRepo: e.gearTypeRepo, gearItemRepo: e.gearItemRepo },
       filters
+    );
+  },
+
+  // ============================================================================
+  // Member History Operations
+  // ============================================================================
+
+  async getMemberProfile(memberId: string) {
+    const e = getEnv();
+    return getMemberProfile(
+      {
+        memberRepo: e.memberRepo,
+        checkoutRepo: e.checkoutRepo,
+        gearItemRepo: e.gearItemRepo,
+        gearTypeRepo: e.gearTypeRepo,
+        clock: e.clock
+      },
+      memberId
+    );
+  },
+
+  async getMemberOpenItems(memberId: string) {
+    const e = getEnv();
+    return getMemberOpenItems(
+      {
+        memberRepo: e.memberRepo,
+        checkoutRepo: e.checkoutRepo,
+        gearItemRepo: e.gearItemRepo,
+        gearTypeRepo: e.gearTypeRepo,
+        clock: e.clock
+      },
+      memberId
+    );
+  },
+
+  async getMemberBehaviorSummary(memberId: string) {
+    const e = getEnv();
+    return getMemberBehaviorSummary(
+      {
+        memberRepo: e.memberRepo,
+        checkoutRepo: e.checkoutRepo,
+        gearItemRepo: e.gearItemRepo,
+        gearTypeRepo: e.gearTypeRepo,
+        clock: e.clock
+      },
+      memberId
+    );
+  },
+
+  async getMemberActivityTimeline(memberId: string, limit?: number) {
+    const e = getEnv();
+    return getMemberActivityTimeline(
+      {
+        memberRepo: e.memberRepo,
+        checkoutRepo: e.checkoutRepo,
+        gearItemRepo: e.gearItemRepo,
+        gearTypeRepo: e.gearTypeRepo,
+        clock: e.clock
+      },
+      memberId,
+      limit
     );
   },
 

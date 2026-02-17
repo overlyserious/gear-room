@@ -6,12 +6,11 @@
     toggleWidget
   } from '$lib/stores/dashboard-preferences.js';
   import type { WidgetId } from '$lib/stores/dashboard-preferences.js';
+  import { WIDGET_REGISTRY } from '$lib/dashboard/widget-registry.js';
   import OverdueItemsWidget from '$lib/dashboard/OverdueItemsWidget.svelte';
   import InventoryStatusWidget from '$lib/dashboard/InventoryStatusWidget.svelte';
-  import DashboardSettings from '$lib/dashboard/DashboardSettings.svelte';
 
   let preferences = $state(loadPreferences());
-  let showSettings = $state(false);
 
   function handleToggle(id: WidgetId) {
     preferences = toggleWidget(preferences, id);
@@ -19,25 +18,25 @@
   }
 </script>
 
-<div class="max-w-6xl mx-auto p-6">
+<div class="max-w-5xl mx-auto p-6">
   <header class="mb-6 flex items-center justify-between">
-    <div>
-      <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-      <a href="/" class="text-blue-600 hover:underline text-sm">Back to Home</a>
+    <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+    <div class="flex items-center gap-3">
+      {#each WIDGET_REGISTRY as widget}
+        <label class="flex items-center gap-1.5 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isWidgetVisible(preferences, widget.id)}
+            onchange={() => handleToggle(widget.id)}
+            class="w-3.5 h-3.5 rounded border-gray-300"
+          />
+          <span class="text-gray-600">{widget.label}</span>
+        </label>
+      {/each}
     </div>
-    <button
-      onclick={() => (showSettings = !showSettings)}
-      class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700"
-    >
-      {showSettings ? 'Hide Settings' : 'Settings'}
-    </button>
   </header>
 
-  {#if showSettings}
-    <DashboardSettings {preferences} onToggle={handleToggle} />
-  {/if}
-
-  <div class="space-y-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {#if isWidgetVisible(preferences, 'overdue-items')}
       <OverdueItemsWidget />
     {/if}

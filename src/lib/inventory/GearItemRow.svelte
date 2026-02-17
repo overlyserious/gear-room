@@ -35,7 +35,7 @@
         {#if onEdit}
           <button
             onclick={() => onEdit?.(item)}
-            class="px-2 py-1 text-xs bg-blue-50 text-blue-700 border border-blue-200 rounded hover:bg-blue-100"
+            class="px-2 py-1 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
           >
             Edit
           </button>
@@ -43,7 +43,7 @@
         {#if onMaintenance}
           <button
             onclick={() => onMaintenance?.(item)}
-            class="px-2 py-1 text-xs bg-amber-50 text-amber-700 border border-amber-200 rounded hover:bg-amber-100"
+            class="px-2 py-1 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
           >
             Maintenance
           </button>
@@ -51,7 +51,7 @@
         {#if onRetire}
           <button
             onclick={() => onRetire?.(item)}
-            class="px-2 py-1 text-xs bg-gray-50 text-gray-600 border border-gray-200 rounded hover:bg-gray-100"
+            class="px-2 py-1 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 rounded"
           >
             Retire
           </button>
@@ -60,7 +60,7 @@
         {#if onEdit}
           <button
             onclick={() => onEdit?.(item)}
-            class="px-2 py-1 text-xs bg-blue-50 text-blue-700 border border-blue-200 rounded hover:bg-blue-100"
+            class="px-2 py-1 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
           >
             Edit
           </button>
@@ -68,7 +68,7 @@
         {#if onReturnFromMaintenance}
           <button
             onclick={() => onReturnFromMaintenance?.(item)}
-            class="px-2 py-1 text-xs bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100"
+            class="px-2 py-1 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
           >
             Return from Maint.
           </button>
@@ -76,7 +76,7 @@
         {#if onRetire}
           <button
             onclick={() => onRetire?.(item)}
-            class="px-2 py-1 text-xs bg-gray-50 text-gray-600 border border-gray-200 rounded hover:bg-gray-100"
+            class="px-2 py-1 text-xs text-red-600 hover:text-red-700 hover:bg-red-50 rounded"
           >
             Retire
           </button>

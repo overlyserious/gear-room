@@ -207,10 +207,10 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
   }
 </script>
 
-<div class="max-w-4xl mx-auto p-6">
+<div class="max-w-5xl mx-auto p-6">
   <header class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900">Gear Room</h1>
-    <p class="text-gray-600 mt-1">Tap your college ID or search to get started</p>
+    <h1 class="text-2xl font-bold text-gray-900">Member Lookup</h1>
+    <p class="text-gray-500 text-sm mt-1">Tap your college ID or search to get started</p>
   </header>
 
   <main class="space-y-6">
@@ -260,7 +260,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
         <div class="mt-4 text-center">
           <button
             onclick={() => (showRegistration = true)}
-            class="text-blue-600 hover:underline"
+            class="text-blue-600 hover:underline text-sm"
           >
             Register a new member
           </button>
@@ -371,7 +371,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
             <h2 class="text-2xl font-bold">{selectedMember.fullName}</h2>
             <p class="text-gray-500">{selectedMember.collegeId.value}</p>
           </div>
-          <button onclick={clearMember} class="text-gray-500 hover:text-gray-700">
+          <button onclick={clearMember} class="text-gray-500 hover:text-gray-700 text-sm">
             Change
           </button>
         </div>
@@ -417,7 +417,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
             <button
               onclick={handleSignWaiver}
               disabled={!waiverAgreed || isSigningWaiver}
-              class="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+              class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
               {isSigningWaiver ? 'Signing...' : 'Sign Waiver'}
             </button>
@@ -429,18 +429,24 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
               Ready to check out gear
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
               <a
                 href="/checkout?member={selectedMember.id}"
-                class="block text-center py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Check Out Gear
               </a>
               <a
                 href="/return?member={selectedMember.id}"
-                class="block text-center py-4 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                class="px-6 py-3 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50"
               >
                 Return Gear
+              </a>
+              <a
+                href="/members/{selectedMember.id}"
+                class="px-6 py-3 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                View History
               </a>
             </div>
           {:else}
@@ -463,20 +469,26 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
               </ul>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
               {#if !selectedMember.hasValidWaiver()}
                 <button
                   onclick={() => (showWaiver = true)}
-                  class="py-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
+                  class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
                   Sign Waiver
                 </button>
               {/if}
               <a
                 href="/return?member={selectedMember.id}"
-                class="block text-center py-4 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                class="px-6 py-3 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50"
               >
                 Return Gear
+              </a>
+              <a
+                href="/members/{selectedMember.id}"
+                class="px-6 py-3 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50"
+              >
+                View History
               </a>
             </div>
           {/if}
@@ -486,17 +498,17 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
 
     {#if !selectedMember && !showRegistration}
       <!-- Quick Actions -->
-      <nav class="grid grid-cols-2 gap-4">
-        <a href="/checkout" class="bg-blue-600 text-white rounded-lg p-4 text-center hover:bg-blue-700">
+      <nav class="grid grid-cols-2 gap-3">
+        <a href="/checkout" class="border border-gray-200 bg-white text-gray-900 rounded-lg p-4 text-center hover:bg-gray-50 font-medium">
           Check Out Gear
         </a>
-        <a href="/return" class="bg-green-600 text-white rounded-lg p-4 text-center hover:bg-green-700">
+        <a href="/return" class="border border-gray-200 bg-white text-gray-900 rounded-lg p-4 text-center hover:bg-gray-50 font-medium">
           Return Gear
         </a>
-        <a href="/inventory" class="bg-gray-600 text-white rounded-lg p-4 text-center hover:bg-gray-700">
+        <a href="/inventory" class="border border-gray-200 bg-white text-gray-900 rounded-lg p-4 text-center hover:bg-gray-50 font-medium">
           Inventory
         </a>
-        <a href="/dashboard" class="bg-amber-600 text-white rounded-lg p-4 text-center hover:bg-amber-700">
+        <a href="/dashboard" class="border border-gray-200 bg-white text-gray-900 rounded-lg p-4 text-center hover:bg-gray-50 font-medium">
           Dashboard
         </a>
       </nav>
@@ -504,9 +516,9 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
 
     <!-- Demo Mode Section -->
     <div class="mt-8 pt-8 border-t border-gray-200">
-      <div class="bg-purple-50 rounded-lg p-6">
-        <h2 class="text-lg font-semibold text-purple-900 mb-2">Demo Mode</h2>
-        <p class="text-sm text-purple-700 mb-4">
+      <div class="bg-gray-50 rounded-lg border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-2">Demo Mode</h2>
+        <p class="text-sm text-gray-600 mb-4">
           {#if hasData}
             Sample data is loaded. Try searching for members like "Alex Rivera" or college ID "STU001".
           {:else}
@@ -515,7 +527,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
         </p>
 
         {#if demoMessage}
-          <div class="mb-4 p-3 bg-white rounded-lg text-sm text-purple-800 border border-purple-200">
+          <div class="mb-4 p-3 bg-white rounded-lg text-sm text-gray-700 border border-gray-200">
             {demoMessage}
           </div>
         {/if}
@@ -524,7 +536,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
           <button
             onclick={loadDemoData}
             disabled={isLoadingDemo}
-            class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+            class="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50"
           >
             {#if isLoadingDemo}
               Loading...
@@ -538,7 +550,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
             <button
               onclick={clearData}
               disabled={isLoadingDemo}
-              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+              class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50"
             >
               Clear All Data
             </button>
@@ -546,7 +558,7 @@ I confirm that I am at least 18 years old and legally able to enter into this ag
         </div>
 
         {#if hasData}
-          <div class="mt-4 text-xs text-purple-600">
+          <div class="mt-4 text-xs text-gray-500">
             <strong>Sample Members:</strong> Alex Rivera (STU001), Jordan Chen (STU002 - has overdue items),
             Sam Taylor (STU003 - no waiver), Morgan Williams (STU004 - suspended), Casey Johnson (STU005)
           </div>

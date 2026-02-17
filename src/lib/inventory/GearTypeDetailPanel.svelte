@@ -51,7 +51,7 @@
         {#if onEdit}
           <button
             onclick={onEdit}
-            class="px-3 py-1.5 text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-lg hover:bg-blue-100"
+            class="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
           >
             Edit
           </button>
@@ -59,7 +59,7 @@
         {#if onDelete}
           <button
             onclick={onDelete}
-            class="px-3 py-1.5 text-sm bg-red-50 text-red-700 border border-red-200 rounded-lg hover:bg-red-100"
+            class="px-3 py-1.5 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg"
           >
             Delete
           </button>
@@ -118,11 +118,11 @@
         {/if}
       </div>
 
-      <div class="flex gap-4 text-sm mb-4">
-        <span class="text-green-700">Available: {counts.available}</span>
-        <span class="text-blue-700">Checked Out: {counts.checkedOut}</span>
-        <span class="text-amber-700">Maintenance: {counts.maintenance}</span>
-        <span class="text-gray-400">Retired: {counts.retired}</span>
+      <div class="flex gap-4 text-sm text-gray-600 mb-4">
+        <span>Available: {counts.available}</span>
+        <span>Checked Out: {counts.checkedOut}</span>
+        <span>Maintenance: {counts.maintenance}</span>
+        <span>Retired: {counts.retired}</span>
       </div>
 
       {#if detail.items.length === 0}

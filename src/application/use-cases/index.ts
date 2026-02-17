@@ -103,3 +103,17 @@ export {
   type ListGearTypesDeps,
   type GearTypeListItem
 } from './inventory-use-cases.js';
+
+// Member history use cases
+export {
+  getMemberProfile,
+  getMemberOpenItems,
+  getMemberBehaviorSummary,
+  getMemberActivityTimeline,
+  type GetMemberHistoryDeps,
+  type MemberProfile,
+  type OpenItemSummary,
+  type BehaviorSummary,
+  type TimelineEvent,
+  type TimelineEventType
+} from './member-history-use-cases.js';

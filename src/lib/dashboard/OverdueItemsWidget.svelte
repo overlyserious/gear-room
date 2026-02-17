@@ -53,7 +53,7 @@
           {#each items as item}
             <tr>
               <td class="py-3">
-                <div class="font-medium text-gray-900">{item.memberName}</div>
+                <a href="/members/{item.memberId}" class="font-medium text-blue-600 hover:underline">{item.memberName}</a>
                 <div class="text-gray-500 text-xs">{item.collegeId}</div>
                 <div class="text-gray-500 text-xs">
                   {item.memberEmail}

@@ -27,18 +27,18 @@
   </div>
 
   {#if gt.isIndividuallyTracked}
-    <div class="flex gap-3 text-xs">
+    <div class="flex gap-3 text-xs text-gray-500">
       {#if counts.available > 0}
-        <span class="text-green-700">Available: {counts.available}</span>
+        <span>Available: {counts.available}</span>
       {/if}
       {#if counts.checkedOut > 0}
-        <span class="text-blue-700">Checked Out: {counts.checkedOut}</span>
+        <span>Checked Out: {counts.checkedOut}</span>
       {/if}
       {#if counts.maintenance > 0}
-        <span class="text-amber-700">Maintenance: {counts.maintenance}</span>
+        <span>Maintenance: {counts.maintenance}</span>
       {/if}
       {#if counts.retired > 0}
-        <span class="text-gray-400">Retired: {counts.retired}</span>
+        <span>Retired: {counts.retired}</span>
       {/if}
     </div>
   {/if}
